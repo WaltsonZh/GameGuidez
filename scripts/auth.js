@@ -1,5 +1,14 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from './firebase.js'
+
+// listen for auth state changes
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log('user logged in: ' + user.email)
+  } else {
+    console.log('user logged out.')
+  }
+})
 
 // sign up
 const signupForm = document.querySelector('#signup-form')
@@ -26,9 +35,7 @@ signupForm.addEventListener('submit', (e) => {
 const logout = document.querySelector('#logout')
 logout.addEventListener('click', (e) => {
   e.preventDefault()
-  signOut(auth).then(() => {
-    console.log('user signed out.')
-  })
+  signOut(auth)
 })
 
 // log in
@@ -39,7 +46,6 @@ loginForm.addEventListener('submit', (e) => {
   const password = loginForm['login-password'].value
 
   signInWithEmailAndPassword(auth, email, password).then((cred) => {
-    console.log(cred.user)
     const modal = document.querySelector('#modal-login')
     loginForm.reset()
     M.Modal.getInstance(modal).close()
