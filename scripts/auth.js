@@ -9,7 +9,7 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     const unsub = onSnapshot(guidesCollection, (snapshot) => {
       setupGuides(snapshot.docs)
-    })
+    }, (err) => console.log(err.message))
   } else {
     setupGuides([])
   }
@@ -23,13 +23,15 @@ createForm.addEventListener('submit', (e) => {
   addDoc(guidesCollection, {
     title: createForm['title'].value,
     content: createForm['content'].value,
-  }).then(() => {
-    const modal = document.querySelector('#modal-create')
-    createForm.reset()
-    M.Modal.getInstance(modal).close()
-  }).catch((err) => {
-    console.log(err.message)
   })
+    .then(() => {
+      const modal = document.querySelector('#modal-create')
+      createForm.reset()
+      M.Modal.getInstance(modal).close()
+    })
+    .catch((err) => {
+      console.log(err.message)
+    })
 })
 
 // sign up
