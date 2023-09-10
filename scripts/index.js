@@ -12,7 +12,7 @@ export const setupUI = (user) => {
   if (user) {
     getDoc(doc(db, 'users', user.uid)).then((doc) => {
       const html = `
-        <div>Loged in as ${user.email}</div>
+        <div>Logged in as ${user.email}</div>
         <div>${doc.data().bio}</div>
       `
       accountDetails.innerHTML = html
