@@ -1,0 +1,16 @@
+{
+  "name": "gameguidez",
+  "version": "1.0.0",
+  "description": "Free youtube tutorial about Firebase Authentication, using vanilla Javascript, with the template provided by the course.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vite": "^4.4.9"
+  }
+}
