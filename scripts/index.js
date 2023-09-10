@@ -1,3 +1,6 @@
+import { getDoc, doc } from 'firebase/firestore'
+import { db } from './firebase.js'
+
 // DOM elements
 const guideList = document.querySelector('.guides')
 const loggedOutLinks = document.querySelectorAll('.logged-out')
@@ -7,14 +10,19 @@ const accountDetails = document.querySelector('.account-details')
 // setup navbar links conditional rendering
 export const setupUI = (user) => {
   if (user) {
-    const html = `<div>Loged in as ${user.email}</div>`
-    accountDetails.innerHTML = html
+    getDoc(doc(db, 'users', user.uid)).then((doc) => {
+      const html = `
+        <div>Loged in as ${user.email}</div>
+        <div>${doc.data().bio}</div>
+      `
+      accountDetails.innerHTML = html
+    })
 
     loggedInLinks.forEach((link) => {
-      link.style.display = 'block';
+      link.style.display = 'block'
     })
     loggedOutLinks.forEach((link) => {
-      link.style.display = 'none';
+      link.style.display = 'none'
     })
   } else {
     accountDetails.innerHTML = ''
