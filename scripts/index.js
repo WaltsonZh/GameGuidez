@@ -12,7 +12,7 @@ export const setupGuides = (data) => {
     html += li
   })
 
-  guideList.innerHTML = html
+  guideList.innerHTML = html || '<h5 class="center-align">Login to view guides</h5>'
 }
 
 //setup meterialize components

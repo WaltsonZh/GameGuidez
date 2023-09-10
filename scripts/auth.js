@@ -3,17 +3,14 @@ import { onSnapshot } from 'firebase/firestore'
 import { auth, guidesCollection } from './firebase.js'
 import { setupGuides } from './index.js'
 
-// get data
-const unsub = onSnapshot(guidesCollection, (snapshot) => {
-  setupGuides(snapshot.docs)
-})
-
 // listen for auth state changes
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    console.log('user logged in: ' + user.email)
+    const unsub = onSnapshot(guidesCollection, (snapshot) => {
+      setupGuides(snapshot.docs)
+    })
   } else {
-    console.log('user logged out.')
+    setupGuides([])
   }
 })
 
