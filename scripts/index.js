@@ -1,4 +1,28 @@
+// DOM elements
 const guideList = document.querySelector('.guides')
+const loggedOutLinks = document.querySelectorAll('.logged-out')
+const loggedInLinks = document.querySelectorAll('.logged-in')
+
+// setup navbar links conditional rendering
+export const setupUI = (user) => {
+  if (user) {
+    loggedInLinks.forEach((link) => {
+      link.style.display = 'block';
+    })
+    loggedOutLinks.forEach((link) => {
+      link.style.display = 'none';
+    })
+  } else {
+    loggedInLinks.forEach((link) => {
+      link.style.display = 'none'
+    })
+    loggedOutLinks.forEach((link) => {
+      link.style.display = 'block'
+    })
+  }
+}
+
+// setup guides
 export const setupGuides = (data) => {
   let html = ''
   data.forEach((doc) => {

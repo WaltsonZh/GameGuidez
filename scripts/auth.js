@@ -1,10 +1,11 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { onSnapshot } from 'firebase/firestore'
+import { addDoc, onSnapshot } from 'firebase/firestore'
 import { auth, guidesCollection } from './firebase.js'
-import { setupGuides } from './index.js'
+import { setupGuides, setupUI } from './index.js'
 
 // listen for auth state changes
 onAuthStateChanged(auth, (user) => {
+  setupUI(user)
   if (user) {
     const unsub = onSnapshot(guidesCollection, (snapshot) => {
       setupGuides(snapshot.docs)
@@ -12,6 +13,23 @@ onAuthStateChanged(auth, (user) => {
   } else {
     setupGuides([])
   }
+})
+
+// create new guide
+const createForm = document.querySelector('#create-form')
+createForm.addEventListener('submit', (e) => {
+  e.preventDefault()
+
+  addDoc(guidesCollection, {
+    title: createForm['title'].value,
+    content: createForm['content'].value,
+  }).then(() => {
+    const modal = document.querySelector('#modal-create')
+    createForm.reset()
+    M.Modal.getInstance(modal).close()
+  }).catch((err) => {
+    console.log(err.message)
+  })
 })
 
 // sign up
@@ -28,7 +46,7 @@ signupForm.addEventListener('submit', (e) => {
    * waltson2003@gmail.com, waltsonZh
    */
 
-  createUserWithEmailAndPassword(auth, email, password).then((cred) => {
+  createUserWithEmailAndPassword(auth, email, password).then(() => {
     const modal = document.querySelector('#modal-signup')
     signupForm.reset()
     M.Modal.getInstance(modal).close()
@@ -49,7 +67,7 @@ loginForm.addEventListener('submit', (e) => {
   const email = loginForm['login-email'].value
   const password = loginForm['login-password'].value
 
-  signInWithEmailAndPassword(auth, email, password).then((cred) => {
+  signInWithEmailAndPassword(auth, email, password).then(() => {
     const modal = document.querySelector('#modal-login')
     loginForm.reset()
     M.Modal.getInstance(modal).close()
