@@ -1,7 +1,19 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { addDoc, setDoc, doc, onSnapshot } from 'firebase/firestore'
-import { auth, guidesCollection, db } from './firebase.js'
 import { setupGuides, setupUI } from './index.js'
+import { auth, db, guidesCollection } from './firebase.js'
+
+// add admin functions
+const adminForm = document.querySelector('.admin-actions')
+adminForm.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const adminEmail = document.querySelector('#admin-email').value
+
+  fetch(`/.netlify/functions/set-user-admin?email=${adminEmail}`)
+    .then((res) => res.json())
+    .then((data) => console.log(data))
+    .catch((err) => console.log(err))
+})
 
 // listen for auth state changes
 onAuthStateChanged(auth, (user) => {
@@ -55,7 +67,7 @@ signupForm.addEventListener('submit', (e) => {
   createUserWithEmailAndPassword(auth, email, password)
     .then((cred) => {
       return setDoc(doc(db, 'users', cred.user.uid), {
-        bio: signupForm['signup-bio'].value
+        bio: signupForm['signup-bio'].value,
       })
     })
     .then(() => {
