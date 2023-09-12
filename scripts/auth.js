@@ -65,7 +65,6 @@ signupForm.addEventListener('submit', (e) => {
    * Users:
    * fake@fake.com, fakepassword
    * admin@admin.com, admin123
-   * waltson2003@gmail.com, waltsonZh
    */
 
   createUserWithEmailAndPassword(auth, email, password)
@@ -78,6 +77,9 @@ signupForm.addEventListener('submit', (e) => {
       const modal = document.querySelector('#modal-signup')
       signupForm.reset()
       M.Modal.getInstance(modal).close()
+      signupForm.querySelector('.error').innerHTML = ''
+    }).catch((err) => {
+      signupForm.querySelector('.error').innerHTML = err.message
     })
 })
 
@@ -99,5 +101,8 @@ loginForm.addEventListener('submit', (e) => {
     const modal = document.querySelector('#modal-login')
     loginForm.reset()
     M.Modal.getInstance(modal).close()
+    loginForm.querySelector('.error').innerHTML = ''
+  }).catch((err) => {
+    loginForm.querySelector('.error').innerHTML = err.message
   })
 })
