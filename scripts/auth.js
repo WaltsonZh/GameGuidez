@@ -17,18 +17,23 @@ adminForm.addEventListener('submit', async (e) => {
 
 // listen for auth state changes
 onAuthStateChanged(auth, (user) => {
-  setupUI(user)
   if (user) {
+    user.getIdTokenResult().then((idTokenReault) => {
+      user.admin = idTokenReault.claims.admin
+      setupUI(user)
+    })
+    
     const unsub = onSnapshot(
       guidesCollection,
       (snapshot) => {
         setupGuides(snapshot.docs)
       },
       (err) => console.log(err.message)
-    )
-  } else {
-    setupGuides([])
-  }
+      )
+    } else {
+      setupUI()
+      setupGuides([])
+    }
 })
 
 // create new guide

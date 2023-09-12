@@ -6,14 +6,22 @@ const guideList = document.querySelector('.guides')
 const loggedOutLinks = document.querySelectorAll('.logged-out')
 const loggedInLinks = document.querySelectorAll('.logged-in')
 const accountDetails = document.querySelector('.account-details')
+const adminItems = document.querySelectorAll('.admin')
 
 // setup navbar links conditional rendering
 export const setupUI = (user) => {
   if (user) {
+    if (user.admin) {
+      adminItems.forEach((item) => {
+        item.style.display = 'block'
+      })
+    }
+
     getDoc(doc(db, 'users', user.uid)).then((doc) => {
       const html = `
         <div>Logged in as ${user.email}</div>
         <div>${doc.data().bio}</div>
+        <div class = "pink-text">${user.admin ? 'Admin' : ''}</div>
       `
       accountDetails.innerHTML = html
     })
@@ -32,6 +40,9 @@ export const setupUI = (user) => {
     })
     loggedOutLinks.forEach((link) => {
       link.style.display = 'block'
+    })
+    adminItems.forEach((item) => {
+      item.style.display = 'none'
     })
   }
 }
