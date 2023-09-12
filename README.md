@@ -7,4 +7,10 @@ Free youtube tutorial about Firebase Authentication, using vanilla Javascript an
 
 ([visit site](https://wzh-gameguidez.netlify.app))
 
+### Demo users
+- email: fake@fake.com<br>
+  passowrd: fakepassword
+- email: admin@admin.com<br>
+  password: admin123
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/824e4701-64e5-4d53-801d-1662d3236f7a/deploy-status)](https://app.netlify.com/sites/wzh-gameguidez/deploys)
