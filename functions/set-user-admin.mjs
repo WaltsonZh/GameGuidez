@@ -10,39 +10,25 @@ export const handler = async (event, context) => {
 
   try {
     const user = await admin.auth().getUserByEmail(email)
-    await admin.auth().setCustomUserClaims(user.uid, {
-      admin: true,
-    })
+    if (user.admin !== true) {
+      return {
+        statusCode: 501,
+        body: 'only admins can add other admins, sucker',
+      }
+    } else {
+      await admin.auth().setCustomUserClaims(user.uid, {
+        admin: true,
+      })
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: `Success! ${email} has been made an admin` }),
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: `Success! ${email} has been made an admin` }),
+      }
     }
   } catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify(err.message),
+      body: JSON.stringify(err),
     }
   }
-
-  // return admin
-  //   .auth()
-  //   .getUserByEmail(email)
-  //   .then((user) => {
-  //     return admin.auth().setCustomUserClaims(user.uid, {
-  //       admin: true,
-  //     })
-  //   })
-  //   .then(() => {
-  //     return {
-  //       statusCode: 200,
-  //       body: JSON.stringify({ message: `Success! ${email} has been made an admin` }),
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     return {
-  //       statusCode: 500,
-  //       body: JSON.stringify(err.message),
-  //     }
-  //   })
 }

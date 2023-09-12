@@ -10,8 +10,7 @@ adminForm.addEventListener('submit', async (e) => {
   const adminEmail = document.querySelector('#admin-email').value
 
   fetch(`/.netlify/functions/set-user-admin?email=${adminEmail}`)
-    .then((res) => res.json())
-    .then((data) => console.log(data))
+    .then((res) => console.log(res))
     .catch((err) => console.log(err))
 })
 
